@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Approvisionnement;
 use App\Http\Requests\StoreApprovisionnementRequest;
 use App\Http\Requests\UpdateApprovisionnementRequest;
+use App\Models\Produit;
 
 class ApprovisionnementController extends Controller
 {
@@ -13,7 +14,7 @@ class ApprovisionnementController extends Controller
      */
     public function index()
     {
-        //
+        return view("approvisionnements.index", ["approvisionnements"=>Approvisionnement::all(), "produits"=>Produit::all()]);
     }
 
     /**
@@ -29,7 +30,9 @@ class ApprovisionnementController extends Controller
      */
     public function store(StoreApprovisionnementRequest $request)
     {
-        //
+       $app =  Approvisionnement::create($request->validated());
+       $app->produit->update(["quantite"=>$app->produit->quantite+$app->quantite]);
+        return redirect()->back();
     }
 
     /**
@@ -53,7 +56,8 @@ class ApprovisionnementController extends Controller
      */
     public function update(UpdateApprovisionnementRequest $request, Approvisionnement $approvisionnement)
     {
-        //
+        $approvisionnement->update($request->validated());
+        return redirect()->back();
     }
 
     /**
@@ -61,6 +65,7 @@ class ApprovisionnementController extends Controller
      */
     public function destroy(Approvisionnement $approvisionnement)
     {
-        //
+        $approvisionnement->delete();
+        return redirect()->back();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ligne_vente;
+use App\Models\Produit;
 use App\Http\Requests\StoreLigne_venteRequest;
 use App\Http\Requests\UpdateLigne_venteRequest;
 
@@ -29,7 +30,10 @@ class LigneVenteController extends Controller
      */
     public function store(StoreLigne_venteRequest $request)
     {
-        //
+        Ligne_vente::create($request->validated());
+        $prod = Produit::find($request->produit_id);
+        $prod->update(["quantite"=>$prod->quantite-$request->quantite]);
+        return redirect()->back();
     }
 
     /**
@@ -53,7 +57,8 @@ class LigneVenteController extends Controller
      */
     public function update(UpdateLigne_venteRequest $request, Ligne_vente $ligne_vente)
     {
-        //
+        $ligne_vente->update($request->validated());
+        return redirect()->back();
     }
 
     /**
@@ -61,6 +66,7 @@ class LigneVenteController extends Controller
      */
     public function destroy(Ligne_vente $ligne_vente)
     {
-        //
+        $ligne_vente->delete();
+        return redirect()->back();
     }
 }

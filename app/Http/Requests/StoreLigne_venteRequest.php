@@ -23,7 +23,7 @@ class StoreLigne_venteRequest extends FormRequest
     {
         return [
            "vente_id"=>["required", "integer"],
-           "product_id"=>["required", "integer"],
+           "produit_id"=>["required", "integer"],
            "quantite"=>["required", "integer"]
         ];
     }

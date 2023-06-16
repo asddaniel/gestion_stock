@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\Produit;
 use App\Models\Ligne_vente;
 use App\Models\Vente;
+use App\Models\Client;
 use App\Models\Approvisionnement;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
         Route::bind('Vente', function($value){
             return Vente::findOrFail($value);
         });
+        Route::bind('Client', function($value){
+            return Client::findOrFail($value);
+        });
+
         Route::bind('Ligne_vente', function($value){
             return Ligne_vente::findOrFail($value);
         });

@@ -22,7 +22,7 @@ class StoreVenteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "client_name"=>["required", "string"]
+            "client_id"=>["required", "integer"]
         ];
     }
 }

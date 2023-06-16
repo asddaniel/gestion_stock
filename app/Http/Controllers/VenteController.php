@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vente;
+use App\Models\Client;
+use App\Models\Produit;
+use App\Models\Ligne_vente;
 use App\Http\Requests\StoreVenteRequest;
 use App\Http\Requests\UpdateVenteRequest;
 
@@ -13,7 +16,7 @@ class VenteController extends Controller
      */
     public function index()
     {
-        //
+        return view('ventes.index', ["ventes"=>Vente::all(), "clients"=>Client::all()]);
     }
 
     /**
@@ -21,7 +24,7 @@ class VenteController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -29,15 +32,17 @@ class VenteController extends Controller
      */
     public function store(StoreVenteRequest $request)
     {
-        //
+        Vente::create($request->validated());
+        return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      */
     public function show(Vente $vente)
-    {
-        //
+    {    $produits = Produit::all();
+        $lignes_ventes  = Ligne_vente::where('vente_id', $vente->id)->get();
+        return view("ventes.show", compact('vente', 'produits', 'lignes_ventes'));
     }
 
     /**
@@ -53,7 +58,8 @@ class VenteController extends Controller
      */
     public function update(UpdateVenteRequest $request, Vente $vente)
     {
-        //
+        $vente->update($request->validated());
+        return redirect()->back();
     }
 
     /**
@@ -61,6 +67,8 @@ class VenteController extends Controller
      */
     public function destroy(Vente $vente)
     {
-        //
+        $vente->delete();
+        // dd($vente);
+        return redirect()->back();
     }
 }
