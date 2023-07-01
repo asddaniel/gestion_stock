@@ -8,6 +8,7 @@ use App\Http\Controllers\ApprovisionnementController;
 use App\Http\Controllers\VenteController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\LigneVenteController;
+use App\Http\Controllers\PayementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,17 @@ use App\Http\Controllers\LigneVenteController;
 // Route::get('/', function () {
 //     return view('index');
 // });
-Route::get("/", [MainController::class, "home"])->name("home");
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get("/", [MainController::class, "home"])->name("home");
 Route::get("/produits", [ProduitController::class, "index"])->name("produit.home");
 Route::post("/produits", [ProduitController::class, "store"])->name("produit.store");
 Route::get("/produits/{Produit}/delete", [ProduitController::class, "destroy"])->name("produit.delete");
@@ -38,17 +49,12 @@ Route::get("/ventes/{Vente}", [VenteController::class, 'show'])->name("vente.sho
 Route::get("/clients", [ClientController::class, 'index'])->name('client.index');
 Route::post("/clients", [ClientController::class, 'store'])->name('client.store');
 Route::delete("/clients/{Client}", [ClientController::class, 'destroy'])->name('client.destroy');
+Route::get("/clients/{Client}", [ClientController::class, 'show'])->name('client.show');
 Route::delete("/ligneVente/{Ligne_vente}", [LigneVenteController::class, 'destroy'])->name('lignevente.destroy');
 Route::post("/lignevente", [LigneVenteController::class, 'store'])->name('lignevente.store');
+Route::post("/payement", [PayementController::class, 'store'])->name("payement.store");
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';

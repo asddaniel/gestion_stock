@@ -137,7 +137,7 @@
                         </label>
                     </td>
                     <td><img src="img/users/1.jpg" class="table-user-thumb" alt=""></td>
-                    <td>{{ $app->produit->name }}</td>
+                    <td>{{ $app->produit->name ?? "" }}</td>
                     <td>{{ $app->prix_achat }}</td>
 
                     <td>{{ $app->quantite }}</td>

@@ -38,7 +38,23 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
+        $dettes = 0;
+        foreach ($client->ventes as  $vente) {
+           // print_r($vente->produit->prix??0);
+           foreach ($vente->lignes as $ligne) {
+            $dettes+= ($ligne->produit->prix??0)*$ligne->quantite;
+           }
+
+        }
+        //dd( (object)$client->payements->toArray());
+        $payements = 0;
+        foreach ($client->payements as $payement) {
+             $payements+=$payement->montant;
+        }
+
+
+
+        return view("clients.show", ["client"=>$client, "dettes"=>$dettes, "payements"=>$payements]);
     }
 
     /**

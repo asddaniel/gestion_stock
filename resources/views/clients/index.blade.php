@@ -29,7 +29,7 @@
                     <th>Nom du client</th>
 
                     <th>Actions</th>
-                    
+
                 </tr>
             </thead>
             <tbody>
@@ -43,7 +43,7 @@
                 <div class="d-flex justify-content-around">
                    <a href="{{ route('client.destroy', $client->id) }}"
                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $client->id }}').submit();"><i class="ik ik-trash"></i></a>
-                  <a href="#"> <i class="ik ik-edit"></i></a>
+                  <a href="{{ route('client.show', $client->id) }}"> <i class="ik ik-edit"></i></a>
                   <form id="delete-form-{{ $client->id }}" action="{{ route('client.destroy', $client->id) }}" method="POST" style="display: none;">
                     @csrf
                     @method('DELETE')
@@ -52,7 +52,8 @@
 
             </td>
             <td>
-                0
+               ---
+
             </td>
 
         </tr>
