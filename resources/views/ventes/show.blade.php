@@ -47,7 +47,7 @@
         <tr>
 
             <td><img src="{{ asset('img/102348.png') }}" class="table-user-thumb" alt=""></td>
-            <td>{{ $vente->produit->name }}</td>
+            <td>{{ $vente->produit->name??"" }}</td>
             <td>
                 {{ $vente->quantite }}
             </td>
@@ -64,11 +64,11 @@
                 </div>
 
             </td>
-            <td>{{ $vente->produit->prix }}</td>
+            <td>{{ $vente->produit->prix??"" }}</td>
 
-            <td>{{ $vente->quantite*$vente->produit->prix }}</td>
+            <td>{{ $vente->quantite*($vente->produit->prix??0)  }}</td>
             @php
-            $somme+= $vente->quantite*$vente->produit->prix;
+            $somme+= $vente->quantite*($vente->produit->prix??0);
         @endphp
 
         </tr>
