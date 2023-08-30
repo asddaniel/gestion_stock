@@ -20,7 +20,7 @@
                 <label for="quantite">quantite</label>
                 <input type="number" name="quantite" placeholder="nombres des pièces " class="form-control">
             </div>
-            <input type="hidden" name="vente_id" value="{{ $vente->id }}">
+            <input type="hidden" name="vente_id" value="{{ $ventes->id }}">
             <div class="form-group">
                 <button class="btn btn-primary">Enregistrer</button>
             </div>
@@ -81,6 +81,21 @@
             <td></td>
             <td>{{ $somme }} </td>
         </tr>
+        <tr>
+            <td> payement : </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> {{ $ventes->is_paid }}</td>
+            <td>
+                @if ($ventes->is_paid == 0)
+                    <a href="{{ route('vente.payer', $ventes->id) }}" class="btn btn-primary">Payer</a>
+                @else
+                 <input type="checkbox" name="payement" checked class="form-control text-primary" style="color: blue" readonly disabled>
+                @endif
+
+            </td>
+        </tr>
 
 
 
@@ -95,10 +110,11 @@
     </div>
 </div>
 <script>
+
     document.form_acheter.addEventListener("submit", function(e){
         e.preventDefault();
-        // alert("cool")
-        //alert(this.elements["produit_id"].selectedOptions[0].getAttribute("quantite"))
+
+       // alert(this.elements["produit_id"].selectedOptions[0].getAttribute("quantite"))
         if(this.quantite.value>this.elements["produit_id"].selectedOptions[0].getAttribute("quantite")){
             Swal.fire({
              icon: 'error',
@@ -107,7 +123,7 @@
              footer: 'insuffisant'
            })
         }else{
-            this->submit();
+            this.submit();
         }
     });
 </script>

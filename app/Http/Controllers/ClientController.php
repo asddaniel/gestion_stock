@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreClientRequest;
+use Illuminate\Support\Str;
 
 class ClientController extends Controller
 {
@@ -29,7 +30,9 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        Client::create($request->validated());
+        $data = $request->validated();
+        $data["uid"] = Str::random(10);
+        Client::create($data);
         return redirect()->back();
     }
 

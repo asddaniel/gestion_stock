@@ -8,6 +8,7 @@ use App\Models\Produit;
 use App\Models\Ligne_vente;
 use App\Http\Requests\StoreVenteRequest;
 use App\Http\Requests\UpdateVenteRequest;
+use App\Models\Payement;
 
 class VenteController extends Controller
 {
@@ -42,7 +43,21 @@ class VenteController extends Controller
     public function show(Vente $vente)
     {    $produits = Produit::all();
         $lignes_ventes  = Ligne_vente::where('vente_id', $vente->id)->get();
-        return view("ventes.show", compact('vente', 'produits', 'lignes_ventes'));
+        $ventes = $vente;
+        return view("ventes.show", compact('ventes', 'produits', 'lignes_ventes'));
+    }
+    public function payer(Vente $vente){
+        $montant = 0;
+        // dd($vente);
+        foreach ($vente->lignes as $ligne) {
+            $montant += $ligne->quantite * $ligne->produit->prix;
+        }
+        $payement = Payement::create([
+            'client_id' => $vente->client_id,
+            'montant' => $montant
+        ]);
+        $vente->update(['is_paid' => 1]);
+        return redirect()->back();
     }
 
     /**

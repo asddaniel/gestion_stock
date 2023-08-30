@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <select name="client_id" id="" class="form-control">
                         @foreach ($clients as $client)
-                            <option value="{{ $client->id }}">{{ $client->name }}</option>
+                            <option value="{{ $client->id }}">{{ $client->name.' ('.$client->uid.')' }}</option>
                         @endforeach
                     </select>
                 </div>

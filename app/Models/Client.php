@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Client extends Model
 {
     use HasFactory;
-    protected $fillable = ["name"];
+    protected $fillable = ["name", 'uid'];
 
     /**
      * Get all of the ventes for the Client

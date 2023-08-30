@@ -25,7 +25,7 @@
             <thead>
                 <tr>
 
-                    <th class="nosort">image</th>
+                    <th class="nosort">id</th>
                     <th>Nom du client</th>
 
                     <th>Actions</th>
@@ -36,7 +36,7 @@
         @foreach ($clients as $client)
         <tr>
 
-            <td><img src="img/users/1.jpg" class="table-user-thumb" alt=""></td>
+            <td>{{ $client->uid }}</td>
             <td>{{ $client->name }}</td>
 
             <td>

@@ -25,6 +25,7 @@
         </div>
 
 
+
         <div class="col-lg-3 col-md-6 col-sm-12">
             <div class="widget">
                 <div class="widget-body">
@@ -45,6 +46,116 @@
             </div>
         </div>
     </div>
+    <div class="row px-3">
+        <label for="filtre">Filtrer les produits</label>
+        <select name="filtre" id="selecteurprod" class="form-control selecteurprod">
+            <option value="quantite">quantite</option>
+            <option value="ventes">ventes</option>
+        </select>
+    </div>
+      <div>
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="produit-data" data-produits='{{ $produits }}'></div>
+      <div class="ventes" data-vente="{{ $ventes }}"></div>
+
+      <script src=" {{ asset('js/chart.js') }}"></script>
+
+      <script>
+        const prods = JSON.parse(document.querySelector('.produit-data').getAttribute('data-produits'))
+        const labels = prods.map((prod)=>prod.name)
+        const quantity = prods.map((prod)=>prod.quantite)
+        const ctx = document.getElementById('myChart');
+        const ventes = JSON.parse(document.querySelector('.ventes').getAttribute('data-vente'))
+        console.log(ventes)
+        const prod_ventes = ventes.map((vente)=>{
+            const produits = prods.filter((produit)=>produit.id == vente.produit_id)
+            if(produits.length>0){
+                return {name:produits[0].name, id:vente.produit_id, quantite:ventes.filter((vt)=>vt.produit_id == vente.produit_id).reduce((a,b)=>a+b.quantite,0) }
+            }else{
+                return {name:'deleted produit', id:vente.produit_id, quantite:ventes.filter((vt)=>vt.produit_id == vente.produit_id).reduce((a,b)=>a+b.quantite, 0)}
+            }
+
+
+        })
+        const pvt = []
+        prod_ventes.forEach(element => {
+         if(!(pvt.filter(e=>e.id == element.id).length>0)){
+            pvt.push(element)
+         }
+        });
+        const pvendus = pvt.map((prod)=>prod.name)
+        const qtvendu = pvt.map((prod)=>prod.quantite)
+        console.log(pvendus)
+
+
+
+      var chart =  new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '# quantite',
+              data: quantity,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+    document.querySelector('.selecteurprod').addEventListener('change', function(e){
+        e.preventDefault();
+        console.log(e.target.value)
+        if(e.target.value=='ventes'){
+            chart.destroy();
+           chart =  new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: pvendus,
+            datasets: [{
+              label: '# quantite',
+              data: qtvendu,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+        }else{
+            chart.destroy();
+           chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '# quantite',
+              data: quantity,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+        }
+
+    })
+
+      </script>
 
 
 
@@ -126,13 +237,13 @@
                                 <span class="custom-control-label">&nbsp;</span>
                             </label>
                         </th>
-                        <th class="nosort">image</th>
+                        <th class="nosort">id</th>
                         <th>Nom</th>
                         <th>Prix</th>
                         <th>quantite</th>
                         <th>Date de création</th>
+                        <th>montant</th>
                         <th>action</th>
-                        <th>Salary</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -144,12 +255,13 @@
                             <span class="custom-control-label">&nbsp;</span>
                         </label>
                     </td>
-                    <td><img src="{{ asset('img/102348.png') }}" class="table-user-thumb" alt=""></td>
+                    <td>{{ $product->id }}</td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->prix }}</td>
 
                     <td>{{ $product->quantite }}</td>
                     <td>{{ $product->created_at }}</td>
+                    <td>{{ $product->quantite*$product->prix }}</td>
                     <td>
                         <div class="d-flex justify-content-around">
                            <a href="{{ route('produit.delete', $product->id) }}"><i class="ik ik-trash"></i></a>

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('ventes', function (Blueprint $table) {
             $table->id();
             $table->string("client_name")->nullable();
+            $table->boolean("is_paid")->default(0);
             $table->timestamps();
         });
     }

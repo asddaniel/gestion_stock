@@ -10,6 +10,8 @@ use App\Models\Ligne_vente;
 use App\Models\Vente;
 use App\Models\Client;
 use App\Models\Approvisionnement;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,6 +47,10 @@ class AppServiceProvider extends ServiceProvider
 
         Route::bind('Approvisionnement', function($value){
             return Approvisionnement::findOrFail($value);
+        });
+
+        Blade::if('is_admin', function () {
+            return Auth::user()->is_admin == 1;
         });
     }
 }

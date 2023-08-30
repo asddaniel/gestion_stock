@@ -1,8 +1,8 @@
 <div class="app-sidebar colored">
     <div class="sidebar-header">
-        <a class="header-brand" href="index.html">
+        <a class="header-brand" href="{{ route('home') }}">
 
-            <span class="text">Gestion des Stock</span>
+            <span class="text">Gestion des Stocks</span>
         </a>
         <button type="button" class="nav-toggle"><i data-toggle="expanded" class="ik ik-toggle-right toggle-icon"></i></button>
         <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
@@ -13,8 +13,15 @@
             <nav id="main-menu-navigation" class="navigation-main">
                 <div class="nav-lavel">Navigation</div>
                 <div class="nav-item active">
-                    <a href="{{route('home')}}"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
+                    <a href="{{route('dashboard')}}"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
                 </div>
+                @is_admin()
+                <div class="nav-item active">
+                    <a href="{{route('admin.dashboard')}}"><i class="ik ik-bar-chart-2"></i><span>gestion des utilisateurs</span></a>
+                </div>
+                @endis_admin()
+
+
                 <div class="nav-item">
                     <a href="{{ route("produit.home") }}"><i class="ik ik-menu"></i><span>Produits</span> </a>
                 </div>
